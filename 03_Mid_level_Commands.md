@@ -1,5 +1,5 @@
 # 1. `git rebase`
-**Purpose:** Re-apply commits from one branch onto another, creating a cleaner linear history.  
+**Purpose:** Apply commits from one branch onto another to create a cleaner linear history (without merge commits).  
 **Syntax:**  
 ```bash
 git checkout feature-branch
@@ -21,9 +21,39 @@ git cherry-pick <commit-hash>
 ```
 **Example:**
 ```bash
+git checkout main
 git cherry-pick 3fce19a
 ```
+Output:
+```yaml
+[main abc1234] Fix: resolve login bug
+ Author: You <you@example.com>
+ Date: Tue May 14 13:00 2025 +0530
+```
 > This applies that one commit into your current branch. Great for hotfixes or selective merges.
+
+**Scenario:**
+You’re on `main`, and you want to copy one commit from `bugfix`
+```less
+bugfix:        X---Y---Z
+main:          A---B---C
+```
+You run:
+```bash
+git checkout main
+git cherry-pick Y
+```
+**Internally:**  
+1. Git finds the "patch" created by commit `Y`  ---> **patch means difference**
+2. It applies the same patch on top of `C`
+3. It creates a new commit Y' on `main`
+
+**New state:**
+```vbnet
+main: A---B---C---Y'
+```
+> Safe way to reuse just one commit, without rebasing or merging branches.
+
 
 # 3. `git tag`
 **Purpose:** Mark specific points in your repo history (usually for releases)       
@@ -32,16 +62,29 @@ git cherry-pick 3fce19a
 git tag <tag-name>          # lightweight
 git tag -a <tag-name> -m "message"  # annotated
 ```
+- Tags are just pointers to a specific commit, like a bookmark.
+- If it's an annotated tag, Git stores metadata (message, tagger, timestamp)
+
 **Example:**
 ```bash
 git tag -a v1.0.0 -m "First stable release"
 git push origin v1.0.0
 ```
+Git Internals:
+- Git creates a `v1.0.0` file under `.git/refs/tags/`
+- That file contains the commit hash of C. (assuming we are tagging to commit C)
+
 > Tags help when you want to go back to a specific version.
 
 
 # 4. `git bisect`
-**Purpose:** Find the exact commit where a bug was introduced — binary search of commits.    
+**Purpose:** Find the exact commit where a bug was introduced — binary search of commits.   
+**Internals:**  
+1. It does a binary search of your commit history.
+2. Git picks the middle commit in your range.
+3. You manually test and mark it good/bad.
+4. Repeats until one commit remains.
+
 **Syntax:**  
 ```bash
 git bisect start
@@ -55,10 +98,33 @@ git bisect bad
 ```
 > After a few steps, it tells you exactly which commit introduced the bug
 
+#### Scenario: You know commit `a1b2c3d` was working fine. Now on main, the bug exists. Let Git find where it started.
+Commands:
+```bash
+git bisect start
+git bisect bad            # current commit is bad
+git bisect good a1b2c3d   # known good commit (magcha asa commit je tumhala mahiti ahe ki tyat ekhi bug navta) 
+```
+Git will checkout a middle commit:
+```bash
+Bisecting: 3 revisions left to test after this (roughly 2 steps)
+```
+You test that commit:
+- If it works → `git bisect good`
+- If it's buggy → `git bisect bad`
+
+Keep repeating until you see:
+```sql
+a2d3e6f is the first bad commit
+```
+Finish:
+```bash
+git bisect reset
+```
 
 
 # 5. `git blame`
-**Purpose:** See who changed which line in a file and when       
+**Purpose:** Find who last edited each line of a file.      
 **Syntax:**  
 ```bash
 git blame <file-name>
@@ -68,6 +134,18 @@ git blame <file-name>
 git blame app.py
 ```
 > Helpful for debugging or reviewing history in large teams
+
+#### Scenario: You’re debugging `app.py` and want to see who wrote a buggy line.
+Command:
+```bash
+git blame app.py
+```
+Output:
+```scss
+3fce19a (Alice   2025-05-01 15:42:10 +0530) def login():
+bfac123 (Bob     2025-05-03 12:21:30 +0530)     raise Exception("Bug here")
+```
+Now you can talk to Bob 😄
 
 
 # 6. `git revert`
@@ -93,7 +171,13 @@ git reflog
 ```bash
 a4b21a3 HEAD@{0}: commit: fixed navbar
 27cf3e0 HEAD@{1}: reset: moving to HEAD~1
+8cdef12 HEAD@{2}: commit: removed footer
 ```
+Now you can:
+```bash
+git checkout 8cdef12
+```
+Boom! You recovered your "lost" commit.
 > Extremely useful if you accidentally lose commits and want to recover them
 
 
