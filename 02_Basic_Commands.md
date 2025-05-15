@@ -4,7 +4,7 @@
 ```bash
 git config --global user.name "Your Name"
 git config --global user.email "you@example.com"
-git config --list
+git config --list # if you want to see the credentials that we have set
 ```
 **Example:**
 ```bash
@@ -62,9 +62,10 @@ Untracked files:
 **Purpose:** Move changes to the staging area, preparing for commit     
 **Syntax:**  
 ```bash
-git add <filename>     # single file
-git add .              # all files in current directory
-git add -A             # add all (including deletes)
+git add <filename>                       # single file
+git add file1.txt file2.py file3.html    # You can add any number of files (just separate them by a space)
+git add .                                # all files in current directory
+git add -A                               # add all (including deletes)
 ```
 **Example:**
 ```bash
