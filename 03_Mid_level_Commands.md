@@ -67,7 +67,7 @@ git tag -a <tag-name> -m "message"  # annotated
 
 **Example:**
 ```bash
-git tag -a v1.0.0 -m "First stable release"
+git tag -a v1.0.0 -m "First stable release"  #This tags the latest commit (HEAD) with an annotated tag v1.0.0.
 git push origin v1.0.0
 ```
 Git Internals:
@@ -76,6 +76,17 @@ Git Internals:
 
 > Tags help when you want to go back to a specific version.
 
+### Bonus: Tagging a previous commit
+If you want to tag a specific commit afterwards (not just the latest), find the commit hash: `git log --oneline`  
+Then:
+```bash
+git tag -a v1.0.0 <commit_hash> -m "Tagging a past release"
+```
+after that u will have to push that tag to remote:(just like we push our changes to remote(github repo))
+```bash
+git push origin v1.0.0           # Push single tag
+git push origin --tags           # Push all tags
+```
 
 # 4. `git bisect`
 **Purpose:** Find the exact commit where a bug was introduced — binary search of commits.   
@@ -250,8 +261,6 @@ After you push once and enter your credentials, Git will store them in:
 > Use cache for CLI convenience during active sessions.  
 > Use store only in private/local environments (not in team or production machines).  
 > On GitHub, it’s better to use Personal Access Tokens (PATs).  
-
-
 
 
 
