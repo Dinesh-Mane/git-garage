@@ -89,6 +89,7 @@ nothing to commit, working tree clean
 | Committed | File snapshot saved in Git’s history                                  |
 | Tracked   | Git is keeping an eye on this file (can be modified/staged/committed) |
 
+Git tracks only those files that you explicitly add using git add. Once added, Git watches those files and tracks changes in them through different stages.  
 
 # The Full Cycle with One File
 #### Step 1: Create a new file
