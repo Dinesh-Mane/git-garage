@@ -424,7 +424,7 @@ This keeps your fork up-to-date.
 
 ---
 
-# SCENARIO 3: First Time Working with a Client’s Private Remote GitHub Repo
+# SCENARIO 4: First Time Working with a Client’s Private Remote GitHub Repo
 **Use case:** You’ve joined a client project, and they’ve given you access to a private GitHub repo (not public). You now need to clone it, set it up locally, create branches, push code, and collaborate safely.
 
 **OVERALL WORKFLOW:**
@@ -546,4 +546,21 @@ git rebase main
 | Should you use force push? | ❌ Never, unless you're explicitly told to (and even then, confirm with team) |
 
 ---
+
+
+# Summary :
+
+
+
+| Step No. | Action Note / Flow                           | Scenario 1<br>Local → GitHub (From 2nd Time)                                                     | Scenario 2<br>Own Remote Repo Contribution (2nd Time) | Scenario 3<br>Open Source Contribution (2nd Time)      | Scenario 4<br>Client’s Private Repo (2nd Time)  |
+| -------- | -------------------------------------------- | ------------------------------------------------------------------------------------------------ | ----------------------------------------------------- | ------------------------------------------------------ | ----------------------------------------------- |
+| 1        | Navigate to local repo folder                | `cd myproject`                                                                                   | `cd my-own-repo`                                      | `cd open-source-repo`                                  | `cd client-private-repo`                        |
+| 2        | Update local main branch with remote changes | `git checkout main`<br>`git pull origin main`                                                    | `git checkout main`<br>`git pull origin main`         | `git checkout main`<br>`git pull origin main`          | `git checkout main`<br>`git pull origin main`   |
+| 3        | Create new branch for your new feature/bug   | `git checkout -b feature/xyz`                                                                    | `git checkout -b feature/xyz`                         | `git checkout -b feature/xyz`                          | `git checkout -b feature/xyz`                   |
+| 4        | Work on code, edit files                     | *(Edit files locally)*                                                                           | *(Edit files locally)*                                | *(Edit files locally)*                                 | *(Edit files locally)*                          |
+| 5        | Stage and commit changes                     | `git add .`<br>`git commit -m "message"`                                                         | `git add .`<br>`git commit -m "message"`              | `git add .`<br>`git commit -m "message"`               | `git add .`<br>`git commit -m "message"`        |
+| 6        | Push your branch to remote                   | `git push origin feature/xyz`                                                                    | `git push origin feature/xyz`                         | `git push origin feature/xyz`                          | `git push origin feature/xyz`                   |
+| 7        | Create Pull Request on GitHub                | *(Go to GitHub UI, create PR from your branch)*                                                  | *(Go to GitHub UI, create PR from your branch)*       | *(Fork repo first, then create PR from forked branch)* | *(Go to GitHub UI, create PR from your branch)* |
+| 8        | Sync branch with latest main (optional)      | `git checkout main`<br>`git pull origin main`<br>`git checkout feature/xyz`<br>`git rebase main` | Same as Scenario 1                                    | Same as Scenario 1                                     | Same as Scenario 1                              |
+| 9        | Repeat for new tasks                         | *Repeat from Step 3*                                                                             | *Repeat from Step 3*                                  | *Repeat from Step 3*                                   | *Repeat from Step 3*                            |
 
