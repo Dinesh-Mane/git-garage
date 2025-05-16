@@ -117,6 +117,8 @@ So if your current branch is `master`, you need to rename it before pushing: `gi
 ```bash
 git push -u origin main
 ```
+- `-u` sets upstream so next time you can use just `git push`
+
 **Output:**
 ```bash
 Enumerating objects: 5, done.
